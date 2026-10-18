@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {joystickVector} from './joystick.js';
+test('joystick center and dead zone have no drift',()=>{for(const [x,y] of [[0,0],[2,1],[-3,0]]){const v=joystickVector(x,y);assert.equal(v.x,0);assert.equal(v.y,0);}});
+test('joystick supports proportional speed and clamps diagonal/outside movement',()=>{const mid=joystickVector(20,0);assert.ok(mid.x>0&&mid.x<1);assert.equal(mid.y,0);for(const [x,y] of [[40,40],[1000,-2000],[-80,0]]){const v=joystickVector(x,y);assert.ok(Math.abs(Math.hypot(v.x,v.y)-1)<1e-12);assert.ok(Math.hypot(v.knobX,v.knobY)<=40.000001);}});
